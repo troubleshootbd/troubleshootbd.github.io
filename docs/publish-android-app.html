@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Flutter Publish Guide (English & Bengali) with YouTube Video</title>
+  <meta name="description"
+    content="A comprehensive, step-by-step guide on publishing your Flutter Android app to the Google Play Store. Learn about keystore creation, release builds (APK/AAB), and setting up your Play Console listing." />
+  <meta name="keywords"
+    content="Flutter, Android, Google Play Store, Play Console, app publishing, keystore, APK, AAB, app development" />
+  <meta name="author" content="Your Name or Company" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="How to Publish Your Flutter Android App - Complete Guide" />
+  <meta property="og:description"
+    content="A detailed tutorial on preparing and publishing your Flutter Android app to the Google Play Store—from project setup to final release." />
+  <meta property="og:url" content="https://khokanuzzman.github.io/documents/publish-android-app.html" />
+  <meta property="og:image" content="https://khokanuzzman.github.io/assets/images/flutter-publish-guide.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="How to Publish Your Flutter Android App - Complete Guide" />
+  <meta property="twitter:description"
+    content="A comprehensive, step-by-step tutorial on building and releasing your Flutter Android app to the Google Play Store." />
+  <meta property="twitter:image" content="https://khokanuzzman.github.io/assets/images/flutter-publish-guide.png" />
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background: #f7f9fa;
+      color: #333;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    p,
+    li {
+      margin-bottom: 10px;
+    }
+
+    code,
+    pre {
+      font-family: "Courier New", Courier, monospace;
+      background: #ecf0f1;
+      border-radius: 4px;
+    }
+
+    pre {
+      padding: 10px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+    }
+
+    .code-container {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+
+    .copy-btn:hover {
+      background: #2980b9;
+    }
+
+    ul,
+    ol {
+      margin-left: 20px;
+    }
+
+    /* Sticky Top Bar Container */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      /* ensure it stays on top */
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 8px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      /* so items can wrap on smaller screens */
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Nav Menu */
+    .nav-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: #3498db;
+      background: #ecf0f1;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .nav-menu a:hover {
+      background: #dce2e4;
+    }
+
+    /* Language Select */
+    .lang-switcher label {
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    .lang-switcher select {
+      padding: 5px;
+      font-size: 1em;
+    }
+
+    /* Main Content Container */
+    .content {
+      padding: 20px;
+    }
+
+    /* Responsive YouTube Video Embed */
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      /* 16:9 ratio */
+      height: 0;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sticky Top Bar -->
+  <div class="top-bar">
+    <!-- Navigation Menu -->
+    <div class="nav-menu">
+      <!-- Each link scrolls to the corresponding section. 
+           data-i18n keys for nav items are in the translations object below. -->
+      <a href="#section1" data-i18n="navSection1"></a>
+      <a href="#section2" data-i18n="navSection2"></a>
+      <a href="#section3" data-i18n="navSection3"></a>
+      <a href="#section4" data-i18n="navSection4"></a>
+      <a href="#section5" data-i18n="navSection5"></a>
+      <a href="#section6" data-i18n="navSection6"></a>
+      <a href="#section7" data-i18n="navSection7"></a>
+      <a href="#section8" data-i18n="navSection8"></a>
+      <a href="#section9" data-i18n="navSection9"></a>
+      <a href="#section10" data-i18n="navSection10"></a>
+      <a href="#section11" data-i18n="navSection11"></a>
+    </div>
+
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+      <label for="languageSelect">Language / ভাষা: </label>
+      <select id="languageSelect" onchange="setLanguage(this.value)">
+        <option value="en">English</option>
+        <option value="bn">বাংলা</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <!-- Main Heading -->
+    <h1 data-i18n="mainHeading"></h1>
+    <p data-i18n="introParagraph"></p>
+
+    <!-- Embedded YouTube Video -->
+    <h2 data-i18n="videoHeading"></h2>
+    <div class="video-container">
+      <!-- Replace "YOUR_VIDEO_ID" with the actual YouTube video ID -->
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/66XLsnAHbRw?si=4wbhknyUYOCJ-Gww"
+        title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- 1. Prepare Your Flutter App for Release -->
+    <h2 id="section1" data-i18n="section1Heading"></h2>
+
+    <h3 data-i18n="section1_1Subheading"></h3>
+    <p data-i18n="section1_1Text"></p>
+    <div class="code-container">
+      <button class="copy-btn" onclick="copyCode('code-upgrade')">
+        Copy Code
+      </button>
+      <pre id="code-upgrade">
+        flutter upgrade
+        flutter pub get</pre>
+    </div>
+
+    <h3 data-i18n="section1_2Subheading"></h3>
+    <ul>
+      <li>
+        <code>flutter analyze</code> <span data-i18n="section1_2Text1"></span>
+      </li>
+      <li>
+        <code>flutter test</code> <span data-i18n="section1_2Text2"></span>
+      </li>
+    </ul>
+
+    <h3 data-i18n="section1_3Subheading"></h3>
+    <p data-i18n="section1_3Text"></p>
+
+    <div class="code-container">
+      <button class="copy-btn" onclick="copyCode('code-build-gradle')">
+        Copy Code
+      </button>
+      <pre id="code-build-gradle">
+        defaultConfig {
+            applicationId "com.yourcompany.datecalculator"
+            minSdkVersion 21
+            targetSdkVersion 34
+            versionCode 1
+            versionName "1.0.0"
+        }</pre>
+    </div>
+
+    <!-- 2. Set Up App Signing -->
+    <h2 id="section2" data-i18n="section2Heading"></h2>
+
+    <h3 data-i18n="section2_1Subheading"></h3>
+    <p data-i18n="section2_1Text"></p>
+
+    <h3 data-i18n="section2_2Subheading"></h3>
+    <p data-i18n="section2_2Text"></p>
+
+    <div class="code-container">
+      <button class="copy-btn" onclick="copyCode('code-keytool')">
+        Copy Code
+      </button>
+      <pre id="code-keytool">
+          keytool -genkey -v -keystore story-note.keystore \
+          -alias story-note -keyalg RSA -keysize 2048 -validity 10000</pre>
+    </div>
+
+    <ul>
+      <li>
+        <code>my_release_key.keystore</code>
+        <span data-i18n="section2_2Bullet1"></span>
+      </li>
+      <li>
+        <code>myalias</code> <span data-i18n="section2_2Bullet2"></span>
+      </li>
+      <li>
+        <code>-validity 10000</code>
+        <span data-i18n="section2_2Bullet3"></span>
+      </li>
+    </ul>
+    <p data-i18n="section2_2Note"></p>
+
+    <!-- 3. Create a key.properties File -->
+    <h2 id="section3" data-i18n="section3Heading"></h2>
+    <p data-i18n="section3Text"></p>
+    <ol>
+      <li data-i18n="section3List1"></li>
+      <li data-i18n="section3List2"></li>
+    </ol>
+    <div class="code-container">
+      <button class="copy-btn" onclick="copyCode('code-key-properties')">
+        Copy Code
+      </button>
+      <pre id="code-key-properties">
+        storePassword=YOUR_KEYSTORE_PASSWORD
+        keyPassword=YOUR_KEY_PASSWORD
+        keyAlias=myalias
+        storeFile=/absolute/path/to/my_release_key.keystore</pre>
+    </div>
+
+    <!-- 4. Configure Gradle for Release Signing -->
+    <h2 id="section4" data-i18n="section4Heading"></h2>
+    <h3 data-i18n="section4_1Subheading"></h3>
+    <p data-i18n="section4_1Text"></p>
+    <div class="code-container">
+      <button class="copy-btn" onclick="copyCode('code-load-properties')">
+        Copy Code
+      </button>
+      <pre id="code-load-properties">
+        def keystoreProperties = new Properties()
+        def keystorePropertiesFile = rootProject.file("key.properties")
+        if (keystorePropertiesFile.exists()) {
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+        }</pre>
+    </div>
+
+    <p data-i18n="section4_1Text2"></p>
+    <div class="code-container">
+      <button class="copy-btn" onclick="copyCode('code-signingConfigs')">
+        Copy Code
+      </button>
+      <pre id="code-signingConfigs">
+signingConfigs {
+    release {
+        keyAlias keystoreProperties['keyAlias']
+        keyPassword keystoreProperties['keyPassword']
+        storeFile file(keystoreProperties['storeFile'])
+        storePassword keystoreProperties['storePassword']
+    }
+}</pre>
+    </div>
+
+    <p data-i18n="section4_1Text3"></p>
+    <div class="code-container">
+      <button class="copy-btn" onclick="copyCode('code-buildTypes')">
+        Copy Code
+      </button>
+      <pre id="code-buildTypes">
+buildTypes {
+    release {
+        signingConfig signingConfigs.release
+        shrinkResources true
+        minifyEnabled true
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+    debug {
+        // debug config uses debug key
+    }
+}</pre>
+    </div>
+
+    <h3 data-i18n="section4_2Subheading"></h3>
+    <p data-i18n="section4_2Text"></p>
+
+    <div class="code-container">
+      <button class="copy-btn" onclick="copyCode('code-compileSdk')">
+        Copy Code
+      </button>
+      <pre id="code-compileSdk">
+          compileSdkVersion 34  // or higher if available
+          defaultConfig {
+              minSdkVersion 21
+              targetSdkVersion 34
+              ...
+}</pre>
+    </div>
+
+    <p data-i18n="section4_2Text2"></p>
+    <div class="code-container">
+      <button class="copy-btn" onclick="copyCode('code-flutter-build')">
+        Copy Code
+      </button>
+      <pre id="code-flutter-build">flutter build appbundle --release</pre>
+    </div>
+
+    <!-- 5. Create a New Application Entry in Google Play Console -->
+    <h2 id="section5" data-i18n="section5Heading"></h2>
+    <ol>
+      <li data-i18n="section5List1"></li>
+      <li data-i18n="section5List2"></li>
+    </ol>
+
+    <!-- 6. Complete Your Store Listing -->
+    <h2 id="section6" data-i18n="section6Heading"></h2>
+    <p data-i18n="section6Text"></p>
+    <ul>
+      <li data-i18n="section6List1"></li>
+      <li data-i18n="section6List2"></li>
+      <li data-i18n="section6List3"></li>
+      <li data-i18n="section6List4"></li>
+    </ul>
+
+    <!-- 7. Policy and Compliance Checks -->
+    <h2 id="section7" data-i18n="section7Heading"></h2>
+    <ul>
+      <li data-i18n="section7List1"></li>
+      <li data-i18n="section7List2"></li>
+    </ul>
+
+    <!-- 8. Upload Your App Bundle -->
+    <h2 id="section8" data-i18n="section8Heading"></h2>
+    <ol>
+      <li data-i18n="section8List1"></li>
+      <li data-i18n="section8List2"></li>
+      <li data-i18n="section8List3"></li>
+      <li data-i18n="section8List4"></li>
+    </ol>
+
+    <!-- 9. Roll Out Your Release -->
+    <h2 id="section9" data-i18n="section9Heading"></h2>
+    <ul>
+      <li data-i18n="section9List1"></li>
+      <li data-i18n="section9List2"></li>
+    </ul>
+
+    <!-- 10. App Review & Publishing -->
+    <h2 id="section10" data-i18n="section10Heading"></h2>
+    <ul>
+      <li data-i18n="section10List1"></li>
+      <li data-i18n="section10List2"></li>
+    </ul>
+
+    <!-- 11. Post-Publication -->
+    <h2 id="section11" data-i18n="section11Heading"></h2>
+    <ul>
+      <li data-i18n="section11List1"></li>
+      <li data-i18n="section11List2"></li>
+      <li data-i18n="section11List3"></li>
+    </ul>
+
+    <h3 data-i18n="quickTipsHeading"></h3>
+    <ul>
+      <li data-i18n="quickTipsList1"></li>
+      <li data-i18n="quickTipsList2"></li>
+      <li data-i18n="quickTipsList3"></li>
+    </ul>
+  </div>
+  <!-- /.content -->
+
+  <script>
+    // --- TRANSLATIONS OBJECT ---
+    // Added "videoHeading" for YouTube embed heading.
+    const translations = {
+      en: {
+        // Navigation Labels
+        navSection1: "1. Prepare App",
+        navSection2: "2. App Signing",
+        navSection3: "3. key.properties",
+        navSection4: "4. Gradle",
+        navSection5: "5. New App Entry",
+        navSection6: "6. Store Listing",
+        navSection7: "7. Policy Checks",
+        navSection8: "8. Upload Bundle",
+        navSection9: "9. Rollout",
+        navSection10: "10. Review & Publish",
+        navSection11: "11. Post-Publication",
+
+        // Video Heading
+        videoHeading: "Watch the Video Tutorial",
+
+        // Main headings, etc.
+        mainHeading:
+          "GUIDE: Publishing a Flutter Android App in the Play Console",
+        introParagraph:
+          "This guide walks you through the steps required to publish an Android app built with Flutter to the Google Play Console.",
+
+        section1Heading: "1. Prepare Your Flutter App for Release",
+        section1_1Subheading: "1.1 Update Dependencies",
+        section1_1Text:
+          "In your Flutter project root, run the following commands:",
+        section1_2Subheading: "1.2 Code Quality Checks",
+        section1_2Text1: "to catch potential issues.",
+        section1_2Text2: "to run tests (if any) before building.",
+        section1_3Subheading: "1.3 App Name and Package Name",
+        section1_3Text:
+          "Your Android build.gradle (typically in android/app/build.gradle) should have a unique applicationId. Example:",
+
+        section2Heading: "2. Set Up App Signing",
+        section2_1Subheading: "2.1 Google Play App Signing (Recommended)",
+        section2_1Text:
+          "When you upload your app the first time, Google will offer to manage your signing key. This is the easiest and most secure option.",
+        section2_2Subheading: "2.2 Locally Managed Keystore",
+        section2_2Text:
+          "If you prefer to manage your own keystore, create a release keystore:",
+        section2_2Bullet1: "The file name for your keystore.",
+        section2_2Bullet2: "The alias you want to associate with this key.",
+        section2_2Bullet3: "The key is valid for 10,000 days (~27 years).",
+        section2_2Note:
+          "Keep this file in a safe location because if you lose it, you cannot update your app on the Play Store under the same package name.",
+
+        section3Heading:
+          "3. Create a key.properties File (Optional but Recommended)",
+        section3Text:
+          "Storing your signing credentials in a separate properties file helps keep them organized and out of your main Gradle file.",
+        section3List1:
+          "In your Android folder (e.g., android/ in a Flutter project), create a file called key.properties.",
+        section3List2:
+          "Add the following content (replace with your actual passwords and keystore path):",
+
+        section4Heading: "4. Configure Gradle for Release Signing",
+        section4_1Subheading: "4.1 Flutter Projects",
+        section4_1Text:
+          "Open android/app/build.gradle, then load the key.properties file (usually after compileSdkVersion):",
+        section4_1Text2: "Add/update the signingConfigs block:",
+        section4_1Text3: "And reference it in the buildTypes block:",
+
+        section4_2Subheading: "4.2 Targeting the Latest SDK",
+        section4_2Text:
+          "In the same defaultConfig block or top-level android {} settings:",
+        section4_2Text2:
+          "Rebuild the app bundle after making signing config changes:",
+
+        section5Heading:
+          "5. Create a New Application Entry in Google Play Console",
+        section5List1:
+          "Log into Play Console: https://play.google.com/console",
+        section5List2:
+          "Add a New App: Select 'All apps' > 'Create app.' Provide an App name, Default language, etc.",
+
+        section6Heading: "6. Complete Your Store Listing",
+        section6Text: "Fill out the required details:",
+        section6List1:
+          "Main Store Listing: Short description, Full description, Screenshots, App icon (512x512), Feature graphic",
+        section6List2: "Content Rating: Answer the questionnaire",
+        section6List3:
+          "Privacy Policy: Provide a valid URL if your app collects personal data",
+        section6List4:
+          "App Access & Declarations: Note any login requirements or sensitive permissions",
+
+        section7Heading: "7. Policy and Compliance Checks",
+        section7List1:
+          "Data Safety: Describe what data is collected, used, or shared.",
+        section7List2:
+          "Ads and Content Guidelines: Follow Google’s ad policies if your app displays ads.",
+
+        section8Heading: "8. Upload Your App Bundle",
+        section8List1: "Release Tracks: Internal, Closed, Open, Production.",
+        section8List2:
+          "Testing First (Recommended): Use Internal testing to validate the .aab.",
+        section8List3:
+          "Upload .aab File: Go to 'Release' > (track) > 'Create new release'.",
+        section8List4:
+          "Add Release Notes: Provide changes or features in this release.",
+
+        section9Heading: "9. Roll Out Your Release",
+        section9List1:
+          "Test and Validate: Distribute to testers, gather feedback.",
+        section9List2:
+          "Go Production: Move to Production track and Start rollout once confident.",
+
+        section10Heading: "10. App Review & Publishing",
+        section10List1:
+          "Google reviews your app. Approval time varies (hours to days).",
+        section10List2:
+          "Once approved, your app is publicly visible on the Play Store.",
+
+        section11Heading: "11. Post-Publication",
+        section11List1:
+          "Monitor Performance: Stats, Reviews, and Android vitals.",
+        section11List2:
+          "Regular Updates: Increment versionCode before rebuilding.",
+        section11List3: "Optimize Listing: Use Store Listing Experiments.",
+
+        quickTipsHeading: "Quick Tips",
+        quickTipsList1:
+          "Keep your keystore safe or use Google Play App Signing.",
+        quickTipsList2:
+          "Adhere to Google Play policies (data safety, ads, content).",
+        quickTipsList3:
+          "Use CI/CD (GitHub Actions, Bitrise, etc.) to automate builds.",
+      },
+
+      bn: {
+        // Navigation Labels (approximate)
+        navSection1: "১. অ্যাপ প্রস্তুতি",
+        navSection2: "২. অ্যাপ সাইনিং",
+        navSection3: "৩. key.properties",
+        navSection4: "৪. Gradle",
+        navSection5: "৫. নতুন অ্যাপ এন্ট্রি",
+        navSection6: "৬. স্টোর লিস্টিং",
+        navSection7: "৭. নীতি যাচাই",
+        navSection8: "৮. বান্ডল আপলোড",
+        navSection9: "৯. রিলিজ চালু",
+        navSection10: "১০. রিভিউ ও প্রকাশ",
+        navSection11: "১১. প্রকাশের পর",
+
+        // Video Heading
+        videoHeading: "ভিডিও টিউটোরিয়াল দেখুন",
+
+        mainHeading:
+          "গাইড: একটি Flutter অ্যান্ড্রয়েড অ্যাপ Google Play Console-এ প্রকাশ করা",
+        introParagraph:
+          "এই গাইডটি আপনাকে Flutter-এ নির্মিত একটি অ্যান্ড্রয়েড অ্যাপ Google Play Console-এ প্রকাশের ধাপগুলি দেখায়।",
+
+        section1Heading: "১. আপনার Flutter অ্যাপ প্রকাশের জন্য প্রস্তুত করুন",
+        section1_1Subheading: "১.১ নির্ভরতাগুলি আপডেট করুন",
+        section1_1Text:
+          "আপনার Flutter প্রকল্পের রুট ফোল্ডারে নিচের কমান্ড চালান:",
+        section1_2Subheading: "১.২ কোডের গুণমান যাচাই",
+        section1_2Text1: "সম্ভাব্য সমস্যাগুলি ধরতে।",
+        section1_2Text2: "সংকলনের আগে (যদি থাকে) পরীক্ষা চালানোর জন্য।",
+        section1_3Subheading: "১.৩ অ্যাপ নাম এবং প্যাকেজ নাম",
+        section1_3Text:
+          "আপনার Android build.gradle (সাধারণত android/app/build.gradle এ) এ একটি অনন্য applicationId থাকতে হবে। উদাহরণ:",
+
+        section2Heading: "২. অ্যাপ সাইনিং সেট আপ করুন",
+        section2_1Subheading: "২.১ Google Play App Signing (প্রস্তাবিত)",
+        section2_1Text:
+          "যখন আপনি প্রথমবার অ্যাপ আপলোড করবেন, Google আপনার সাইনিং কী ম্যানেজ করার প্রস্তাব দেবে। এটি সবচেয়ে সহজ ও নিরাপদ পদ্ধতি।",
+        section2_2Subheading: "২.২ লোকাল কিস্টোর ম্যানেজমেন্ট",
+        section2_2Text:
+          "যদি আপনি নিজে কিস্টোর ম্যানেজ করতে চান, তবে একটি রিলিজ কিস্টোর তৈরি করুন:",
+        section2_2Bullet1: "আপনার কিস্টোরের ফাইল নাম।",
+        section2_2Bullet2:
+          "এই কী-এর জন্য আপনি যে অ্যালিয়াস ব্যবহার করতে চান।",
+        section2_2Bullet3: "এই কী ১০,০০০ দিন (~২৭ বছর) বৈধ।",
+        section2_2Note:
+          "এই ফাইলটি নিরাপদ স্থানে রাখুন, কারণ এটি হারিয়ে গেলে একই প্যাকেজ নাম ব্যবহার করে আপনি আর অ্যাপ আপডেট করতে পারবেন না।",
+
+        section3Heading:
+          "৩. key.properties ফাইল তৈরি করুন (ইচ্ছা করলে, কিন্তু প্রস্তাবিত)",
+        section3Text:
+          "আপনার সাইনিং ক্রেডেনশিয়ালগুলো একটি আলাদা প্রপার্টিজ ফাইলে রাখা ভালো, যাতে প্রধান Gradle ফাইল থেকে এগুলো আলাদা থাকে।",
+        section3List1:
+          "আপনার Android ফোল্ডারে (যেমন Flutter প্রোজেক্টে android/) key.properties নামক একটি ফাইল তৈরি করুন।",
+        section3List2:
+          "নিচের কন্টেন্ট যোগ করুন (আপনার প্রকৃত পাসওয়ার্ড ও কিস্টোর পথ বসান):",
+
+        section4Heading: "৪. রিলিজ সাইনিং-এর জন্য Gradle কনফিগার করুন",
+        section4_1Subheading: "৪.১ Flutter প্রোজেক্ট",
+        section4_1Text:
+          "android/app/build.gradle খুলুন, তারপর key.properties ফাইল লোড করুন (সাধারণত compileSdkVersion এর পরে):",
+        section4_1Text2: "signingConfigs ব্লক যোগ/আপডেট করুন:",
+        section4_1Text3: "এবং buildTypes ব্লকে এটি উল্লেখ করুন:",
+
+        section4_2Subheading: "৪.২ সর্বশেষ SDK টার্গেট করা",
+        section4_2Text:
+          "একই defaultConfig ব্লক বা টপ-লেভেল android {} কনফিগে:",
+        section4_2Text2:
+          "সাইনিং কনফিগ পরিবর্তনের পর অ্যাপ বান্ডল আবার তৈরি করুন:",
+
+        section5Heading:
+          "৫. Google Play Console-এ একটি নতুন অ্যাপ এন্ট্রি তৈরি করুন",
+        section5List1:
+          "Play Console এ লগইন করুন: https://play.google.com/console",
+        section5List2:
+          "'All apps' > 'Create app' নির্বাচন করুন। অ্যাপ নাম, ডিফল্ট ভাষা ইত্যাদি দিন।",
+
+        section6Heading: "৬. আপনার স্টোর লিস্টিং সম্পূর্ণ করুন",
+        section6Text: "প্রয়োজনীয় তথ্য দিন:",
+        section6List1:
+          "Main Store Listing: Short description, Full description, Screenshots, App icon (512x512), Feature graphic",
+        section6List2: "Content Rating: কুইজের উত্তর দিন",
+        section6List3:
+          "Privacy Policy: যদি অ্যাপ ব্যক্তিগত ডেটা সংগ্রহ করে তবে একটি বৈধ URL দিন",
+        section6List4:
+          "App Access & Declarations: কোনো লগইন বা সেনসিটিভ পারমিশনের প্রয়োজন কিনা উল্লেখ করুন",
+
+        section7Heading: "৭. পলিসি এবং কমপ্লায়েন্স যাচাই",
+        section7List1:
+          "Data Safety: কোন ডেটা সংগ্রহ, ব্যবহার বা শেয়ার করা হয়, তা উল্লেখ করুন।",
+        section7List2:
+          "Ads and Content Guidelines: অ্যাপে বিজ্ঞাপন দেখালে Google এর বিজ্ঞাপন নীতি অনুসরণ করুন।",
+
+        section8Heading: "৮. আপনার অ্যাপ বান্ডল আপলোড করুন",
+        section8List1: "Release Tracks: Internal, Closed, Open, Production.",
+        section8List2:
+          "Testing First (প্রস্তাবিত): .aab টেস্ট করতে Internal testing ব্যবহার করুন।",
+        section8List3:
+          "Upload .aab File: 'Release' > (track) > 'Create new release' তে যান।",
+        section8List4:
+          "Add Release Notes: এই রিলিজে কী পরিবর্তন বা ফিচার যোগ হয়েছে উল্লেখ করুন।",
+
+        section9Heading: "৯. আপনার রিলিজ চালু করুন",
+        section9List1:
+          "Test and Validate: টেস্টারদের মধ্যে বিতরণ করুন, ফিডব্যাক নিন।",
+        section9List2:
+          "Go Production: Production ট্র্যাকে যান এবং আপনার রিলিজ চালু করুন।",
+
+        section10Heading: "১০. অ্যাপ রিভিউ ও প্রকাশনা",
+        section10List1:
+          "Google আপনার অ্যাপ পরীক্ষা করবে। সময় (কয়েক ঘণ্টা থেকে কয়েক দিন) লাগতে পারে।",
+        section10List2:
+          "অনুমোদন পেলে, আপনার অ্যাপ Play Store-এ সবার জন্য দৃশ্যমান হবে।",
+
+        section11Heading: "১১. প্রকাশের পরবর্তী পদক্ষেপ",
+        section11List1:
+          "পারফরম্যান্স মনিটর করুন: স্ট্যাট, রিভিউ, এবং Android vitals দেখুন।",
+        section11List2:
+          "নিয়মিত আপডেট: প্রতিবার আপডেটের আগে versionCode বাড়িয়ে নিন।",
+        section11List3:
+          "স্টোর লিস্টিং অপ্টিমাইজ করুন: Store Listing Experiments ব্যবহার করুন।",
+
+        quickTipsHeading: "দ্রুত পরামর্শ",
+        quickTipsList1:
+          "আপনার কিস্টোর নিরাপদে রাখুন অথবা Google Play App Signing ব্যবহার করুন।",
+        quickTipsList2:
+          "Google Play নীতি মেনে চলুন (ডেটা সুরক্ষা, বিজ্ঞাপন, কনটেন্ট)।",
+        quickTipsList3:
+          "CI/CD (GitHub Actions, Bitrise ইত্যাদি) ব্যবহার করে বিল্ড স্বয়ংক্রিয় করুন।",
+      },
+    };
+
+    // --- FUNCTION: setLanguage ---
+    function setLanguage(lang) {
+      // For each element that has a data-i18n attribute, set its text based on the chosen language
+      document.querySelectorAll("[data-i18n]").forEach((elem) => {
+        const key = elem.getAttribute("data-i18n");
+        // If the key is missing in the chosen language, fallback to English
+        elem.innerHTML =
+          translations[lang][key] || translations["en"][key] || "";
+      });
+    }
+
+    // --- FUNCTION: copyCode (for code blocks) ---
+    function copyCode(codeBlockId) {
+      const codeBlock = document.getElementById(codeBlockId);
+      const textToCopy = codeBlock.innerText;
+
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => {
+          alert("Code copied to clipboard!");
+        })
+        .catch((err) => {
+          alert("Failed to copy code: " + err);
+        });
+    }
+
+    // On page load, default to English
+    window.onload = function () {
+      setLanguage("en");
+    };
+  </script>
+</body>
+
+</html>
